@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Global Chat - Proscens</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <meta http-equiv="refresh" content="10"> <!-- Auto refresh every 10 seconds -->
+</head>
+<body>
+<div class="container">
+    <h1>🌍 Global Chat</h1>
+    <a href="/">Back to Home</a>
+    <hr>
+    <div class="chat-messages">
+        {% for message in messages %}
+            <div class="message">
+                <strong>{{ message.sender.username }}:</strong> {{ message.content }}
+                <small>{{ message.timestamp.strftime('%H:%M') }}</small>
+            </div>
+        {% endfor %}
+    </div>
+    <form method="POST" action="/send_global_message">
+        <input type="text" name="message" placeholder="Share your thoughts with the community..." required>
+        <button type="submit">Send</button>
+    </form>
+</div>
+</body>
+</html>

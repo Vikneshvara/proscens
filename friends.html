@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Friends - Proscens</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="container">
+    <h1>👥 Friends</h1>
+    <a href="/">Back to Home</a>
+    <hr>
+    <h2>Your Friends</h2>
+    {% for friend in friends %}
+        <div class="friend-card">
+            <h3>{{ friend.username }}</h3>
+            <p>Level: {{ friend.level }} | XP: {{ friend.xp }}</p>
+            <a href="/chat/{{ friend.id }}">Chat</a> |
+            <a href="/profile/{{ friend.id }}">View Profile</a>
+        </div>
+    {% endfor %}
+    {% if not friends %}
+        <p>No friends yet. Add some from the project pages!</p>
+    {% endif %}
+</div>
+</body>
+</html>

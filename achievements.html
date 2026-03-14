@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Achievements - Proscens</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="container">
+    <h1>🏆 Achievements</h1>
+    <a href="/">Back to Home</a>
+    <hr>
+    <h2>Your Achievements</h2>
+    {% for achievement in achievements %}
+        <div class="achievement-card">
+            <h3>{{ achievement.name }}</h3>
+            <p>{{ achievement.description }}</p>
+            <small>Unlocked: {{ achievement.unlocked_at.strftime('%Y-%m-%d') }}</small>
+        </div>
+    {% endfor %}
+    {% if not achievements %}
+        <p>No achievements yet. Keep learning and submitting projects!</p>
+    {% endif %}
+</div>
+</body>
+</html>

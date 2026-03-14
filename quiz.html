@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>STEM Quiz - Proscens</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="loading-screen">
+    <div class="meteor"></div>
+</div>
+<div class="planet" id="mercury"></div>
+<div class="planet" id="venus"></div>
+<div class="planet" id="earth"></div>
+<div class="planet" id="mars"></div>
+<div class="planet" id="jupiter"></div>
+<div class="planet" id="saturn"></div>
+<div class="planet" id="uranus"></div>
+<div class="planet" id="neptune"></div>
+<div class="moon" onclick="alert('Blood Moon Activated! Perplexity: 0')"></div>
+<div class="mode-selector">
+    <button class="mode-btn active" onclick="setMode('astros')">Astros</button>
+    <button class="mode-btn" onclick="setMode('animer')">Animer</button>
+    <button class="mode-btn" onclick="setMode('relaz')">Relaz</button>
+</div>
+<div class="container">
+    <h1>🧠 STEM Quiz Challenge</h1>
+    <a href="/">Back to Home</a>
+    <hr>
+    <div id="quiz-container">
+        <div id="question"></div>
+        <div id="options"></div>
+        <button id="next-btn" onclick="nextQuestion()" style="display:none;">Next</button>
+    </div>
+    <div id="result" style="display:none;">
+        <h2>Quiz Complete!</h2>
+        <p id="score"></p>
+    </div>
+</div>
+<script>
+const questions = [
+    {
+        question: "What is the chemical symbol for water?",
+        options: ["H2O", "CO2", "O2", "NaCl"],
+        answer: 0
+    },
+    {
+        question: "Which planet is known as the Red Planet?",
+        options: ["Venus", "Mars", "Jupiter", "Saturn"],
+        answer: 1
+    },
+    {
+        question: "What does AI stand for?",
+        options: ["Artificial Intelligence", "Advanced Internet", "Automated Interface", "Active Integration"],
+        answer: 0
+    },
+    {
+        question: "What is the powerhouse of the cell?",
+        options: ["Nucleus", "Mitochondria", "Ribosome", "Endoplasmic Reticulum"],
+        answer: 1
+    },
+    {
+        question: "Which programming language is known for web development?",
+        options: ["Python", "JavaScript", "C++", "Java"],
+        answer: 1
+    }
+];
+
+let currentQuestion = 0;
+let score = 0;
+
+function loadQuestion() {
+    const q = questions[currentQuestion];
+    document.getElementById('question').innerText = q.question;
+    const optionsDiv = document.getElementById('options');
+    optionsDiv.innerHTML = '';
+    q.options.forEach((option, index) => {
+        const btn = document.createElement('button');
+        btn.innerText = option;
+        btn.onclick = () => selectAnswer(index);
+        optionsDiv.appendChild(btn);
+    });
+}
+
+function selectAnswer(index) {
+    if (index === questions[currentQuestion].answer) {
+        score++;
+        alert('Correct!');
+    } else {
+        alert('Wrong!');
+    }
+    document.getElementById('next-btn').style.display = 'block';
+}
+
+function nextQuestion() {
+    currentQuestion++;
+    if (currentQuestion < questions.length) {
+        loadQuestion();
+        document.getElementById('next-btn').style.display = 'none';
+    } else {
+        showResult();
+    }
+}
+
+function showResult() {
+    document.getElementById('quiz-container').style.display = 'none';
+    document.getElementById('result').style.display = 'block';
+    document.getElementById('score').innerText = `You scored ${score} out of ${questions.length}!`;
+}
+
+function setMode(mode) {
+    document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
+    event.target.classList.add('active');
+    if (mode === 'animer') {
+        document.body.style.fontFamily = "'Comic Sans MS', cursive";
+    } else if (mode === 'relaz') {
+        document.body.style.background = 'linear-gradient(to bottom, #ffcccc 0%, #ffffcc 50%, #ccffcc 100%)';
+    } else {
+        document.body.style.background = 'linear-gradient(to bottom, #000011 0%, #000033 50%, #000055 100%)';
+    }
+}
+
+loadQuestion();
+</script>
+</body>
+</html>

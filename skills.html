@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Skills - Proscens</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="loading-screen">
+    <div class="meteor"></div>
+</div>
+<div class="planet" id="mercury"></div>
+<div class="planet" id="venus"></div>
+<div class="planet" id="earth"></div>
+<div class="planet" id="mars"></div>
+<div class="planet" id="jupiter"></div>
+<div class="planet" id="saturn"></div>
+<div class="planet" id="uranus"></div>
+<div class="planet" id="neptune"></div>
+<div class="moon" onclick="alert('Blood Moon Activated! Perplexity: 0')"></div>
+<div class="mode-selector">
+    <button class="mode-btn active" onclick="setMode('astros')">Astros</button>
+    <button class="mode-btn" onclick="setMode('animer')">Animer</button>
+    <button class="mode-btn" onclick="setMode('relaz')">Relaz</button>
+</div>
+<div class="container">
+    <h1>⚔️ Demon Slayer Skills Academy</h1>
+    <a href="/">Back to Home</a>
+    <hr>
+    <p>Learn powerful techniques to become a Hashira! Master swordsmanship and breathing styles.</p>
+    <div class="skill-section">
+        <h2>Breathing Styles</h2>
+        <div class="skill-card" onclick="learnSkill('Water Breathing', 'Flow like water, adapt and overcome!')">🌊 Water Breathing - Tanjiro's style</div>
+        <div class="skill-card" onclick="learnSkill('Flame Breathing', 'Ignite your passion!')">🔥 Flame Breathing - Kyojuro's fury</div>
+        <div class="skill-card" onclick="learnSkill('Thunder Breathing', 'Strike with lightning speed!')">⚡ Thunder Breathing - Zenitsu's power</div>
+        <div class="skill-card" onclick="learnSkill('Wind Breathing', 'Become one with the wind!')">💨 Wind Breathing - Sanemi's rage</div>
+        <div class="skill-card" onclick="learnSkill('Stone Breathing', 'Unmovable as a mountain!')">🪨 Stone Breathing - Gyomei's strength</div>
+        <div class="skill-card" onclick="learnSkill('Sun Breathing', 'The original and most powerful!')">☀️ Sun Breathing - Yoriichi's legacy</div>
+        <div class="skill-card" onclick="learnSkill('Beast Breathing', 'Wild and untamed!')">🐺 Beast Breathing - Inosuke's ferocity</div>
+        <div class="skill-card" onclick="learnSkill('Love Breathing', 'Spread love and kindness!')">💖 Love Breathing - Kanao's grace</div>
+        <div class="skill-card" onclick="learnSkill('Serpent Breathing', 'Slither through danger!')">🐍 Serpent Breathing - Obanai's precision</div>
+        <div class="skill-card" onclick="learnSkill('Insect Breathing', 'Dance like a butterfly!')">🐞 Insect Breathing - Shinobu's poison</div>
+        <div class="skill-card" onclick="learnSkill('Sound Breathing', 'Hear the rhythm of battle!')">🎵 Sound Breathing - Tengen's flash</div>
+        <div class="skill-card" onclick="learnSkill('Mist Breathing', 'Disappear into the mist!')">🌫️ Mist Breathing - Muichiro's calm</div>
+    </div>
+    <div class="skill-section">
+        <h2>Additional Skills</h2>
+        <div class="skill-card" onclick="learnSkill('Swordsmanship Basics', 'Master the blade!')">🗡️ Swordsmanship Basics</div>
+        <div class="skill-card" onclick="learnSkill('Total Concentration Breathing', 'Breathe to enhance abilities!')">🫁 Total Concentration Breathing</div>
+        <div class="skill-card" onclick="learnSkill('Mark Activation', 'Unlock your demon slayer mark!')">🔥 Mark Activation</div>
+        <div class="skill-card" onclick="learnSkill('Nichirin Sword Forging', 'Craft your own sword!')">⚒️ Nichirin Sword Forging</div>
+        <div class="skill-card" onclick="learnSkill('Demon Detection', 'Sense demonic presence!')">👁️ Demon Detection</div>
+        <div class="skill-card" onclick="learnSkill('Regeneration Training', 'Heal faster!')">💚 Regeneration Training</div>
+        <div class="skill-card" onclick="learnSkill('Crow Communication', 'Talk to your crow!')">🐦 Crow Communication</div>
+        <div class="skill-card" onclick="learnSkill('Uniform Customization', 'Design your haori!')">👘 Uniform Customization</div>
+    </div>
+</div>
+<script>
+function setMode(mode) {
+    document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
+    event.target.classList.add('active');
+    if (mode === 'animer') {
+        document.body.style.fontFamily = "'Comic Sans MS', cursive";
+    } else if (mode === 'relaz') {
+        document.body.style.background = 'linear-gradient(to bottom, #ffcccc 0%, #ffffcc 50%, #ccffcc 100%)';
+    } else {
+        document.body.style.background = 'linear-gradient(to bottom, #000011 0%, #000033 50%, #000055 100%)';
+    }
+}
+
+function learnSkill(skill, desc) {
+    alert(`Learning ${skill}! ${desc} Practice daily!`);
+}
+</script>
+</body>
+</html>

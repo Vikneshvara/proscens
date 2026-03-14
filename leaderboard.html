@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Leaderboard - Proscens</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="loading-screen">
+    <div class="meteor"></div>
+</div>
+<div class="planet" id="mercury"></div>
+<div class="planet" id="venus"></div>
+<div class="planet" id="earth"></div>
+<div class="planet" id="mars"></div>
+<div class="planet" id="jupiter"></div>
+<div class="planet" id="saturn"></div>
+<div class="planet" id="uranus"></div>
+<div class="planet" id="neptune"></div>
+<div class="moon" onclick="alert('Blood Moon Activated! Perplexity: 0')"></div>
+<div class="mode-selector">
+    <button class="mode-btn active" onclick="setMode('astros')">Astros</button>
+    <button class="mode-btn" onclick="setMode('animer')">Animer</button>
+    <button class="mode-btn" onclick="setMode('relaz')">Relaz</button>
+</div>
+<div class="container">
+    <h1>🏆 Project Leaderboard</h1>
+    <a href="/">Back to Home</a>
+    <hr>
+    <ol>
+    {% for project in projects %}
+        <li>
+            <strong>{{ project.title }}</strong> - {{ project.votes }} votes
+            <p>{{ project.description }}</p>
+        </li>
+    {% endfor %}
+    </ol>
+</div>
+<script>
+function setMode(mode) {
+    document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
+    event.target.classList.add('active');
+    if (mode === 'animer') {
+        document.body.style.fontFamily = "'Comic Sans MS', cursive";
+    } else if (mode === 'relaz') {
+        document.body.style.background = 'linear-gradient(to bottom, #ffcccc 0%, #ffffcc 50%, #ccffcc 100%)';
+    } else {
+        document.body.style.background = 'linear-gradient(to bottom, #000011 0%, #000033 50%, #000055 100%)';
+    }
+}
+</script>
+</body>
+</html>

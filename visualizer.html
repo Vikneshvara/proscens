@@ -1,0 +1,1295 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>STEM Learning Hub - Proscens</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background: radial-gradient(ellipse at center, #000011 0%, #000033 50%, #000055 100%);
+            background-size: cover;
+            animation: backgroundShift 20s infinite alternate;
+        }
+
+        @keyframes backgroundShift {
+            0% { background: radial-gradient(ellipse at center, #000011 0%, #000033 50%, #000055 100%); }
+            50% { background: radial-gradient(ellipse at center, #110011 0%, #330033 50%, #550055 100%); }
+            100% { background: radial-gradient(ellipse at center, #001100 0%, #003300 50%, #005500 100%); }
+        }
+
+        .solar-system {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .planet {
+            position: absolute;
+            border-radius: 50%;
+            animation: orbit 20s linear infinite;
+        }
+
+        @keyframes orbit {
+            from { transform: rotate(0deg) translateX(200px) rotate(0deg); }
+            to { transform: rotate(360deg) translateX(200px) rotate(-360deg); }
+        }
+
+        .planet#sun {
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(circle, #ffdd00, #ffaa00, #ff7700);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 50px #ffaa00, 0 0 100px #ff7700;
+            animation: sunGlow 4s infinite alternate;
+        }
+
+        @keyframes sunGlow {
+            0% { box-shadow: 0 0 50px #ffaa00, 0 0 100px #ff7700; }
+            100% { box-shadow: 0 0 70px #ffaa00, 0 0 140px #ff7700; }
+        }
+
+        .planet#mercury {
+            width: 12px;
+            height: 12px;
+            background: radial-gradient(circle, #8c7853, #6b5b47);
+            top: 50%;
+            left: 50%;
+            margin-top: -6px;
+            margin-left: -6px;
+            animation: orbit 88s linear infinite;
+            transform-origin: 6px 6px;
+        }
+
+        .planet#venus {
+            width: 18px;
+            height: 18px;
+            background: radial-gradient(circle, #ffc649, #ffb347);
+            top: 50%;
+            left: 50%;
+            margin-top: -9px;
+            margin-left: -9px;
+            animation: orbit 225s linear infinite;
+            transform-origin: 9px 9px;
+        }
+
+        .planet#earth {
+            width: 20px;
+            height: 20px;
+            background: radial-gradient(circle, #6b93d6, #4a7bbf);
+            top: 50%;
+            left: 50%;
+            margin-top: -10px;
+            margin-left: -10px;
+            animation: orbit 365s linear infinite;
+            transform-origin: 10px 10px;
+        }
+
+        .moon {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: #c0c0c0;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            margin-top: -3px;
+            margin-left: -3px;
+            animation: moonOrbit 27s linear infinite;
+            transform-origin: 3px 3px;
+        }
+
+        @keyframes moonOrbit {
+            from { transform: rotate(0deg) translateX(30px) rotate(0deg); }
+            to { transform: rotate(360deg) translateX(30px) rotate(-360deg); }
+        }
+
+        .planet#mars {
+            width: 14px;
+            height: 14px;
+            background: radial-gradient(circle, #c1440e, #a03c0a);
+            top: 50%;
+            left: 50%;
+            margin-top: -7px;
+            margin-left: -7px;
+            animation: orbit 687s linear infinite;
+            transform-origin: 7px 7px;
+        }
+
+        .planet#jupiter {
+            width: 60px;
+            height: 60px;
+            background: radial-gradient(circle, #d8ca9d, #c4b68a);
+            top: 50%;
+            left: 50%;
+            margin-top: -30px;
+            margin-left: -30px;
+            animation: orbit 4333s linear infinite;
+            transform-origin: 30px 30px;
+        }
+
+        .planet#saturn {
+            width: 50px;
+            height: 50px;
+            background: radial-gradient(circle, #fab27b, #e89c5a);
+            top: 50%;
+            left: 50%;
+            margin-top: -25px;
+            margin-left: -25px;
+            animation: orbit 10759s linear infinite;
+            transform-origin: 25px 25px;
+        }
+
+        .saturn-rings {
+            position: absolute;
+            width: 80px;
+            height: 10px;
+            background: rgba(250, 178, 123, 0.3);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            margin-top: -5px;
+            margin-left: -40px;
+            animation: orbit 10759s linear infinite;
+            transform-origin: 40px 5px;
+        }
+
+        .planet#uranus {
+            width: 28px;
+            height: 28px;
+            background: radial-gradient(circle, #4fd0e7, #3bb8d1);
+            top: 50%;
+            left: 50%;
+            margin-top: -14px;
+            margin-left: -14px;
+            animation: orbit 30687s linear infinite;
+            transform-origin: 14px 14px;
+        }
+
+        .planet#neptune {
+            width: 26px;
+            height: 26px;
+            background: radial-gradient(circle, #4b70dd, #3a5bc7);
+            top: 50%;
+            left: 50%;
+            margin-top: -13px;
+            margin-left: -13px;
+            animation: orbit 60190s linear infinite;
+            transform-origin: 13px 13px;
+        }
+
+        .black-hole {
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(circle, #000000, #330000, #660000);
+            border-radius: 50%;
+            top: 20%;
+            right: 10%;
+            box-shadow: 0 0 100px #ff0000, 0 0 200px #ff0000, inset 0 0 50px #000000, inset 0 0 100px #330000;
+            animation: blackHolePulse 5s infinite;
+        }
+
+        @keyframes blackHolePulse {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 0 100px #ff0000, 0 0 200px #ff0000, inset 0 0 50px #000000, inset 0 0 100px #330000;
+            }
+            50% {
+                transform: scale(1.05);
+                box-shadow: 0 0 150px #ff4444, 0 0 300px #ff4444, inset 0 0 75px #220000, inset 0 0 150px #440000;
+            }
+        }
+
+        .meteor {
+            position: absolute;
+            width: 60px;
+            height: 15px;
+            background: linear-gradient(to right, #ff3300, #ff6600, #ffaa00, #ffff00);
+            border-radius: 7.5px;
+            top: -100px;
+            left: 50%;
+            transform: rotate(45deg);
+            animation: meteorCrash 4s ease-in-out;
+            box-shadow: 0 0 30px #ff6600, 0 0 60px #ffaa00;
+        }
+
+        .meteor::before {
+            content: '';
+            position: absolute;
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(to right, transparent, #ffaa00, transparent);
+            top: 5.5px;
+            left: -20px;
+            transform: rotate(-45deg);
+            animation: meteorTrail 4s ease-in-out;
+        }
+
+        @keyframes meteorCrash {
+            0% {
+                top: -100px;
+                left: 50%;
+                opacity: 1;
+                transform: rotate(45deg) scale(1);
+            }
+            25% {
+                top: 30%;
+                left: 45%;
+                opacity: 1;
+                transform: rotate(45deg) scale(1.2);
+            }
+            50% {
+                top: 45%;
+                left: 40%;
+                opacity: 1;
+                transform: rotate(45deg) scale(1.5);
+            }
+            75% {
+                top: 50%;
+                left: 35%;
+                opacity: 0.8;
+                transform: rotate(45deg) scale(1.2);
+            }
+            100% {
+                top: 55%;
+                left: 30%;
+                opacity: 0;
+                transform: rotate(45deg) scale(0.5);
+            }
+        }
+
+        @keyframes meteorTrail {
+            0% { opacity: 0; }
+            25% { opacity: 1; }
+            75% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            animation: fadeOut 4s ease-in-out 3s forwards;
+        }
+
+        @keyframes fadeOut {
+            to { opacity: 0; visibility: hidden; }
+        }
+
+        .startup-text {
+            color: white;
+            font-size: 48px;
+            text-align: center;
+            animation: textGlow 2s infinite alternate;
+        }
+
+        @keyframes textGlow {
+            from { text-shadow: 0 0 10px #fff; }
+            to { text-shadow: 0 0 20px #ffaa00, 0 0 30px #ffaa00; }
+        }
+
+        .container {
+            position: relative;
+            z-index: 10;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            color: white;
+        }
+        .visualizer-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .array-container {
+            display: flex;
+            align-items: end;
+            height: 300px;
+            margin: 20px 0;
+        }
+        .array-bar {
+            width: 20px;
+            background: #ff0000;
+            margin: 0 1px;
+            transition: height 0.3s;
+        }
+        .controls {
+            margin: 20px 0;
+        }
+        .tab-buttons {
+            margin-bottom: 20px;
+        }
+        .tab-btn {
+            padding: 10px 20px;
+            margin: 0 5px;
+            cursor: pointer;
+            background: #333;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        .tab-btn.active {
+            background: #ff0000;
+        }
+        .tab-content {
+            width: 100%;
+        }
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(20, 20px);
+            grid-template-rows: repeat(20, 20px);
+            gap: 1px;
+            margin: 20px auto;
+            width: fit-content;
+        }
+        .grid-cell {
+            width: 20px;
+            height: 20px;
+            background: white;
+            border: 1px solid #ccc;
+            cursor: pointer;
+        }
+        .grid-cell.wall {
+            background: black;
+        }
+        .grid-cell.start {
+            background: green;
+        }
+        .grid-cell.end {
+            background: red;
+        }
+        .grid-cell.visited {
+            background: lightblue;
+            animation: visited 0.5s;
+        }
+        .grid-cell.path {
+            background: yellow;
+            animation: path 0.5s;
+        }
+        @keyframes visited {
+            0% { background: white; }
+            100% { background: lightblue; }
+        }
+        @keyframes path {
+            0% { background: lightblue; }
+            100% { background: yellow; }
+        }
+        .anime-section, .ai-section, .anime-features {
+            margin: 20px 0;
+            text-align: center;
+        }
+        .quiz-controls, .feature-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        .quiz-controls button, .feature-card {
+            padding: 10px 15px;
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .quiz-controls button:hover, .feature-card:hover {
+            background: #ff5252;
+        }
+        .anime-btn {
+            background: linear-gradient(45deg, #ff69b4, #ff1493);
+            border: 2px solid #fff;
+            box-shadow: 0 0 10px #ff69b4;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px #000;
+        }
+        .anime-btn:hover {
+            background: linear-gradient(45deg, #ff1493, #ff69b4);
+            transform: scale(1.05);
+        }
+        .anime-card {
+            background: linear-gradient(45deg, #87ceeb, #00bfff);
+            border: 2px solid #fff;
+            box-shadow: 0 0 10px #87ceeb;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px #000;
+            position: relative;
+            overflow: hidden;
+        }
+        .anime-card::before {
+            content: '✨';
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            font-size: 20px;
+            animation: sparkle 2s infinite;
+        }
+        @keyframes sparkle {
+            0%, 100% { opacity: 0; transform: scale(0.5); }
+            50% { opacity: 1; transform: scale(1); }
+        }
+        .anime-card:hover {
+            background: linear-gradient(45deg, #00bfff, #87ceeb);
+            transform: scale(1.05);
+        }
+        .anime-container {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid #ff69b4;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            min-height: 200px;
+            backdrop-filter: blur(5px);
+        }
+        .anime-chat {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid #87ceeb;
+            border-radius: 15px;
+            padding: 20px;
+            backdrop-filter: blur(5px);
+        }
+        .anime-display {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid #ffd700;
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+            min-height: 100px;
+            backdrop-filter: blur(5px);
+        }
+        #quiz-container {
+            margin: 20px 0;
+            min-height: 200px;
+        }
+        #chat-container {
+            max-width: 600px;
+            margin: 20px auto;
+            border: 2px solid #ff6b6b;
+            border-radius: 10px;
+            padding: 20px;
+        }
+        #chat-messages {
+            height: 200px;
+            overflow-y: auto;
+            background: #f9f9f9;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+        #chat-input {
+            width: 80%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .feature-card {
+            width: 150px;
+            text-align: center;
+        }
+        #feature-display {
+            margin-top: 20px;
+            min-height: 100px;
+        }
+        .skill-section {
+            margin-top: 20px;
+        }
+        .skill-card {
+            display: inline-block;
+            padding: 10px 15px;
+            margin: 5px;
+            background: #ff6b6b;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .skill-card:hover {
+            background: #ff5252;
+        }
+    </style>
+</head>
+<body>
+<div class="loading-screen">
+    <div class="meteor"></div>
+    <div class="startup-text">STEM Learning Hub<br>Initializing...</div>
+</div>
+<div class="solar-system">
+    <div class="planet" id="sun"></div>
+    <div class="planet" id="mercury"></div>
+    <div class="planet" id="venus"></div>
+    <div class="planet" id="earth"></div>
+    <div class="moon"></div>
+    <div class="planet" id="mars"></div>
+    <div class="planet" id="jupiter"></div>
+    <div class="planet" id="saturn"></div>
+    <div class="saturn-rings"></div>
+    <div class="planet" id="uranus"></div>
+    <div class="planet" id="neptune"></div>
+    <div class="black-hole"></div>
+</div>
+<div class="loading-screen">
+    <div class="meteor"></div>
+</div>
+<div class="planet" id="mercury"></div>
+<div class="planet" id="venus"></div>
+<div class="planet" id="earth"></div>
+<div class="planet" id="mars"></div>
+<div class="planet" id="jupiter"></div>
+<div class="planet" id="saturn"></div>
+<div class="planet" id="uranus"></div>
+<div class="planet" id="neptune"></div>
+<div class="moon" onclick="alert('Blood Moon Activated! Perplexity: 0')"></div>
+<div class="mode-selector">
+    <button class="mode-btn active" onclick="setMode('astros')">Astros</button>
+    <button class="mode-btn" onclick="setMode('animer')">Animer</button>
+    <button class="mode-btn" onclick="setMode('relaz')">Relaz</button>
+</div>
+<div class="container">
+    <h1>🧠 Algorithm Visualizer & Educational Hub</h1>
+    <a href="/">Back to Home</a>
+    <hr>
+    <div class="visualizer-container">
+        <div class="tab-buttons">
+            <button class="tab-btn active" onclick="showTab('sorting')">Sorting Algorithms</button>
+            <button class="tab-btn" onclick="showTab('pathfinding')">Pathfinding Algorithms</button>
+            <button class="tab-btn" onclick="showTab('anime')">Educational Hub</button>
+        </div>
+        <div id="sorting-tab" class="tab-content">
+            <div class="controls">
+                <button onclick="generateArray()">Generate New Array</button>
+                <button onclick="bubbleSort()">Bubble Sort</button>
+                <button onclick="quickSort()">Quick Sort</button>
+                <button onclick="mergeSort()">Merge Sort</button>
+                <button onclick="insertionSort()">Insertion Sort</button>
+                <button onclick="selectionSort()">Selection Sort</button>
+                <button onclick="heapSort()">Heap Sort</button>
+                <button onclick="radixSort()">Radix Sort</button>
+            </div>
+            <div class="array-container" id="array-container"></div>
+        </div>
+        <div id="pathfinding-tab" class="tab-content" style="display: none;">
+            <div class="controls">
+                <button onclick="generateGrid()">Generate Grid</button>
+                <button onclick="clearPath()">Clear Path</button>
+                <button onclick="addWalls()">Add Random Walls</button>
+                <button onclick="startAStar()">A* Algorithm</button>
+                <button onclick="startDijkstra()">Dijkstra's Algorithm</button>
+                <button onclick="startBFS()">Breadth-First Search</button>
+            </div>
+            <div class="grid-container" id="grid-container"></div>
+        </div>
+        <div id="anime-tab" class="tab-content" style="display: none;">
+            <div class="anime-section">
+                <h2>📚 Anime-Style Educational Quizzes</h2>
+                <div class="quiz-controls">
+                    <button onclick="startQuiz('7th')" class="anime-btn">7th Grade 🏫</button>
+                    <button onclick="startQuiz('8th')" class="anime-btn">8th Grade 📖</button>
+                    <button onclick="startQuiz('9th')" class="anime-btn">9th Grade 🔬</button>
+                    <button onclick="startQuiz('10th')" class="anime-btn">10th Grade ⚗️</button>
+                    <button onclick="startQuiz('11th')" class="anime-btn">11th Grade 🧬</button>
+                    <button onclick="startQuiz('12th')" class="anime-btn">12th Grade 🧮</button>
+                    <button onclick="startQuiz('mit')" class="anime-btn">MIT Level 🎓</button>
+                    <button onclick="startQuiz('harvard')" class="anime-btn">Harvard Level 🏛️</button>
+                    <button onclick="startQuiz('history')" class="anime-btn">History 📜</button>
+                    <button onclick="startQuiz('literature')" class="anime-btn">Literature 📚</button>
+                    <button onclick="startQuiz('geography')" class="anime-btn">Geography 🌍</button>
+                    <button onclick="startQuiz('art')" class="anime-btn">Art 🎨</button>
+                    <button onclick="startQuiz('economics')" class="anime-btn">Economics 💰</button>
+                    <button onclick="startQuiz('psychology')" class="anime-btn">Psychology 🧠</button>
+                </div>
+                <div id="quiz-container" class="anime-container"></div>
+            </div>
+            <div class="ai-section">
+                <h2>🎓 AI Sensei Tutor</h2>
+                <div id="chat-container" class="anime-chat">
+                    <div id="chat-messages"></div>
+                    <input type="text" id="chat-input" placeholder="Ask your AI Sensei...">
+                    <button onclick="sendMessage()" class="anime-btn">Send 💬</button>
+                </div>
+            </div>
+            <div class="anime-features">
+                <h2>🔬 Ultimate Study Tools</h2>
+                <div class="feature-grid">
+                    <div class="feature-card anime-card" onclick="showFeature('calculator')">🧮 Math Calculator</div>
+                    <div class="feature-card anime-card" onclick="showFeature('flashcards')">📝 Flash Cards</div>
+                    <div class="feature-card anime-card" onclick="showFeature('notes')">📓 Study Notes</div>
+                    <div class="feature-card anime-card" onclick="showFeature('progress')">📊 Progress Tracker</div>
+                    <div class="feature-card anime-card" onclick="showFeature('simulator')">🔬 Science Simulator</div>
+                    <div class="feature-card anime-card" onclick="showFeature('code')">💻 Code Playground</div>
+                    <div class="feature-card anime-card" onclick="showFeature('physics')">⚛️ Physics Lab</div>
+                    <div class="feature-card anime-card" onclick="showFeature('chemistry')">🧪 Chemistry Lab</div>
+                    <div class="feature-card anime-card" onclick="showFeature('history')">📜 History Timeline</div>
+                    <div class="feature-card anime-card" onclick="showFeature('geography')">🌍 Geography Map</div>
+                    <div class="feature-card anime-card" onclick="showFeature('literature')">📚 Literature Analysis</div>
+                    <div class="feature-card anime-card" onclick="showFeature('art')">🎨 Art Gallery</div>
+                </div>
+                <div id="feature-display" class="anime-display"></div>
+            </div>
+        </div>
+    </div>
+    <div class="skill-section">
+        <h2>🚀 Educational Resources</h2>
+        <a href="/math_solver" class="skill-card">🧮 Advanced Math Solver</a>
+        <div class="skill-card" onclick="alert('Science experiments coming soon!')">🔬 Science Labs</div>
+        <div class="skill-card" onclick="alert('History timelines coming soon!')">📜 History Lessons</div>
+        <div class="skill-card" onclick="alert('Coding challenges coming soon!')">💻 Programming Exercises</div>
+        <div class="skill-card" onclick="alert('Test prep coming soon!')">📝 Exam Preparation</div>
+        <div class="skill-card" onclick="alert('Research tools coming soon!')">🔍 Academic Research</div>
+    </div>
+</div>
+<script>
+let array = [];
+let arraySize = 50;
+
+let currentQuiz = [];
+let quizIndex = 0;
+let score = 0;
+
+const quizzes = {
+    '7th': [
+        { question: "What is 25% of 200?", options: ["50", "25", "75", "100"], answer: 0 },
+        { question: "What is the area of a rectangle with length 5cm and width 3cm?", options: ["8cm²", "15cm²", "10cm²", "25cm²"], answer: 1 },
+        { question: "What is the chemical symbol for water?", options: ["H2O", "CO2", "O2", "N2"], answer: 0 },
+        { question: "What is the largest planet in our solar system?", options: ["Earth", "Mars", "Jupiter", "Saturn"], answer: 2 },
+        { question: "What is 15 × 12?", options: ["180", "150", "160", "170"], answer: 0 }
+    ],
+    '8th': [
+        { question: "Solve for x: 2x + 5 = 17", options: ["6", "7", "8", "9"], answer: 0 },
+        { question: "What is the Pythagorean theorem?", options: ["a² + b² = c²", "a + b = c", "a² - b² = c²", "a × b = c"], answer: 0 },
+        { question: "What is the atomic number of carbon?", options: ["6", "8", "12", "14"], answer: 0 },
+        { question: "What is photosynthesis?", options: ["Making food", "Breathing", "Moving", "Sleeping"], answer: 0 },
+        { question: "What is the square root of 144?", options: ["12", "14", "16", "18"], answer: 0 }
+    ],
+    '9th': [
+        { question: "What is the derivative of x²?", options: ["x", "2x", "x²", "2"], answer: 1 },
+        { question: "What is the chemical formula for table salt?", options: ["NaCl", "H2O", "CO2", "CaCO3"], answer: 0 },
+        { question: "What is Newton's second law?", options: ["F = ma", "E = mc²", "PV = nRT", "a = v/t"], answer: 0 },
+        { question: "What is the capital of France?", options: ["London", "Berlin", "Paris", "Rome"], answer: 2 },
+        { question: "What is the value of π (pi) approximately?", options: ["3.14", "3.41", "2.14", "4.13"], answer: 0 }
+    ],
+    '10th': [
+        { question: "What is the integral of 2x dx?", options: ["x²", "2x²", "x² + C", "2x² + C"], answer: 0 },
+        { question: "What is the pH of pure water?", options: ["7", "1", "14", "0"], answer: 0 },
+        { question: "What is the speed of light?", options: ["3 × 10⁸ m/s", "3 × 10⁶ m/s", "3 × 10¹⁰ m/s", "3 × 10⁴ m/s"], answer: 0 },
+        { question: "Who wrote Romeo and Juliet?", options: ["Shakespeare", "Dickens", "Austen", "Hemingway"], answer: 0 },
+        { question: "What is the quadratic formula?", options: ["x = (-b ± √(b²-4ac))/2a", "x = -b/a", "x = a/b", "x = b/a"], answer: 0 }
+    ],
+    '11th': [
+        { question: "What is the limit of (x² - 1)/(x - 1) as x approaches 1?", options: ["1", "2", "0", "∞"], answer: 1 },
+        { question: "What is Avogadro's number?", options: ["6.022 × 10²³", "3.14 × 10²", "1.602 × 10⁻¹⁹", "9.109 × 10⁻³¹"], answer: 0 },
+        { question: "What is the first law of thermodynamics?", options: ["Energy conservation", "Entropy increase", "Heat transfer", "Work done"], answer: 0 },
+        { question: "What is the Magna Carta?", options: ["Constitution", "Peace treaty", "Legal document", "Religious text"], answer: 2 },
+        { question: "What is the derivative of sin(x)?", options: ["cos(x)", "-sin(x)", "tan(x)", "sec(x)"], answer: 0 }
+    ],
+    '12th': [
+        { question: "What is the integral of e^x dx?", options: ["e^x", "e^x + C", "ln(x)", "1/x"], answer: 1 },
+        { question: "What is the Heisenberg uncertainty principle?", options: ["Δx Δp ≥ ħ/2", "E = mc²", "F = ma", "PV = nRT"], answer: 0 },
+        { question: "What is the GDP?", options: ["Gross Domestic Product", "General Data Processor", "Global Development Plan", "Government Defense Program"], answer: 0 },
+        { question: "Who wrote 'The Great Gatsby'?", options: ["Fitzgerald", "Hemingway", "Faulkner", "Steinbeck"], answer: 0 },
+        { question: "What is the fundamental theorem of calculus?", options: ["Integration and differentiation inverse", "Pythagorean theorem", "Law of sines", "Binomial theorem"], answer: 0 }
+    ],
+    'mit': [
+        { question: "What is the time complexity of quicksort in worst case?", options: ["O(n log n)", "O(n²)", "O(n)", "O(1)"], answer: 1 },
+        { question: "What is a neural network?", options: ["Computer network", "Brain-inspired computing", "Social network", "Transportation network"], answer: 1 },
+        { question: "What is Big O notation?", options: ["Algorithm efficiency", "Large number", "Mathematical constant", "Programming language"], answer: 0 },
+        { question: "What is machine learning?", options: ["Learning machines", "AI learning from data", "Mechanical engineering", "Language processing"], answer: 1 },
+        { question: "What is the halting problem?", options: ["Computer stopping", "Unsolvable problem", "Hardware issue", "Software bug"], answer: 1 }
+    ],
+    'harvard': [
+        { question: "What is quantum entanglement?", options: ["Particle connection", "Light speed", "Energy conservation", "Mass increase"], answer: 0 },
+        { question: "What is behavioral economics?", options: ["Economic psychology", "Market analysis", "Financial math", "Business strategy"], answer: 0 },
+        { question: "What is CRISPR?", options: ["Gene editing", "Drug delivery", "Cancer treatment", "Vaccine development"], answer: 0 },
+        { question: "What is dark matter?", options: ["Invisible matter", "Black holes", "Dark energy", "Cosmic radiation"], answer: 0 },
+        { question: "What is the anthropic principle?", options: ["Universe fine-tuned for life", "Human evolution", "Climate change", "Population growth"], answer: 0 }
+    ],
+    'history': [
+        { question: "When did World War II end?", options: ["1945", "1939", "1950", "1941"], answer: 0 },
+        { question: "Who was the first President of the United States?", options: ["Abraham Lincoln", "George Washington", "Thomas Jefferson", "John Adams"], answer: 1 },
+        { question: "What was the main cause of the French Revolution?", options: ["Economic inequality", "Religious conflict", "Foreign invasion", "Technological advancement"], answer: 0 },
+        { question: "Which empire built the Great Wall of China?", options: ["Ming Dynasty", "Qin Dynasty", "Han Dynasty", "Tang Dynasty"], answer: 1 },
+        { question: "What year did the United States declare independence?", options: ["1776", "1789", "1800", "1765"], answer: 0 }
+    ],
+    'literature': [
+        { question: "Who wrote 'Pride and Prejudice'?", options: ["Jane Austen", "Charlotte Brontë", "Emily Brontë", "George Eliot"], answer: 0 },
+        { question: "What is the name of the hobbit in 'The Lord of the Rings'?", options: ["Frodo", "Bilbo", "Gandalf", "Aragorn"], answer: 1 },
+        { question: "Who is the author of '1984'?", options: ["Aldous Huxley", "George Orwell", "Ray Bradbury", "Margaret Atwood"], answer: 1 },
+        { question: "What genre is 'The Great Gatsby'?", options: ["Science Fiction", "Romance", "Mystery", "Literary Fiction"], answer: 3 },
+        { question: "Who wrote 'To Kill a Mockingbird'?", options: ["Harper Lee", "Mark Twain", "Ernest Hemingway", "F. Scott Fitzgerald"], answer: 0 }
+    ],
+    'geography': [
+        { question: "What is the capital of Australia?", options: ["Sydney", "Melbourne", "Canberra", "Perth"], answer: 2 },
+        { question: "Which is the longest river in the world?", options: ["Amazon", "Nile", "Yangtze", "Mississippi"], answer: 1 },
+        { question: "What is the smallest country in the world?", options: ["Monaco", "Vatican City", "San Marino", "Liechtenstein"], answer: 1 },
+        { question: "Which continent is known as the 'Dark Continent'?", options: ["Asia", "Africa", "South America", "Australia"], answer: 1 },
+        { question: "What is the highest mountain in the world?", options: ["K2", "Kangchenjunga", "Lhotse", "Everest"], answer: 3 }
+    ],
+    'art': [
+        { question: "Who painted the Mona Lisa?", options: ["Vincent van Gogh", "Pablo Picasso", "Leonardo da Vinci", "Michelangelo"], answer: 2 },
+        { question: "What art movement did Salvador Dalí belong to?", options: ["Impressionism", "Cubism", "Surrealism", "Abstract Expressionism"], answer: 2 },
+        { question: "Which artist is famous for cutting off his own ear?", options: ["Paul Gauguin", "Vincent van Gogh", "Henri Matisse", "Claude Monet"], answer: 1 },
+        { question: "What is the primary color in RGB model?", options: ["Red, Green, Blue", "Cyan, Magenta, Yellow", "Red, Yellow, Blue", "Orange, Green, Purple"], answer: 0 },
+        { question: "Who sculpted 'David'?", options: ["Donatello", "Michelangelo", "Bernini", "Rodin"], answer: 1 }
+    ],
+    'economics': [
+        { question: "What is inflation?", options: ["Rising prices", "Falling prices", "Stable prices", "No prices"], answer: 0 },
+        { question: "What does GDP stand for?", options: ["Gross Domestic Product", "General Domestic Price", "Global Development Program", "Government Debt Payment"], answer: 0 },
+        { question: "What is supply and demand?", options: ["Market equilibrium", "Government control", "Bank interest", "Stock trading"], answer: 0 },
+        { question: "What is a monopoly?", options: ["Single seller", "Multiple sellers", "No sellers", "Government seller"], answer: 0 },
+        { question: "What is fiscal policy?", options: ["Government spending/taxing", "Central bank actions", "Trade policies", "Labor laws"], answer: 0 }
+    ],
+    'psychology': [
+        { question: "What is classical conditioning?", options: ["Learning by association", "Trial and error", "Observation", "Reinforcement"], answer: 0 },
+        { question: "Who developed psychoanalysis?", options: ["Sigmund Freud", "Carl Jung", "B.F. Skinner", "Abraham Maslow"], answer: 0 },
+        { question: "What is the id, ego, and superego?", options: ["Freud's personality structure", "Memory types", "Learning theories", "Emotional states"], answer: 0 },
+        { question: "What is cognitive dissonance?", options: ["Mental discomfort", "Memory loss", "Sleep disorder", "Learning disability"], answer: 0 },
+        { question: "What is Maslow's hierarchy of needs?", options: ["Motivation pyramid", "Personality types", "Intelligence levels", "Emotional intelligence"], answer: 0 }
+    ]
+};
+
+function startQuiz(type) {
+    currentQuiz = quizzes[type];
+    quizIndex = 0;
+    score = 0;
+    showQuestion();
+}
+
+function showQuestion() {
+    if (quizIndex >= currentQuiz.length) {
+        document.getElementById('quiz-container').innerHTML = `<h3>Quiz Complete! Score: ${score}/${currentQuiz.length}</h3>`;
+        return;
+    }
+    const q = currentQuiz[quizIndex];
+    let html = `<h3>${q.question}</h3>`;
+    q.options.forEach((opt, i) => {
+        html += `<button onclick="answerQuiz(${i})">${opt}</button>`;
+    });
+    document.getElementById('quiz-container').innerHTML = html;
+}
+
+function answerQuiz(choice) {
+    if (choice === currentQuiz[quizIndex].answer) score++;
+    quizIndex++;
+    showQuestion();
+}
+
+function sendMessage() {
+    const input = document.getElementById('chat-input');
+    const message = input.value.trim();
+    if (!message) return;
+    addMessage('You', message);
+    const response = getAIResponse(message);
+    setTimeout(() => addMessage('AI Sensei', response), 500);
+    input.value = '';
+}
+
+function addMessage(sender, text) {
+    const messages = document.getElementById('chat-messages');
+    messages.innerHTML += `<div><strong>${sender}:</strong> ${text}</div>`;
+    messages.scrollTop = messages.scrollHeight;
+}
+
+function getAIResponse(message) {
+    const responses = {
+        'hello': 'Hello! Ready to learn and master algorithms?',
+        'help': 'I can explain sorting, pathfinding, math concepts, or help with your studies!',
+        'math': 'Mathematics is the foundation of algorithms. What topic interests you?',
+        'science': 'Science and algorithms go hand in hand. Ask about physics, chemistry, or biology!',
+        'history': 'History teaches us lessons we apply in problem-solving.',
+        'programming': 'Programming is about logic and creativity. What language are you learning?',
+        'algorithm': 'Algorithms are step-by-step procedures. Which one would you like to understand?',
+        'quiz': 'Take a quiz to test your knowledge at your grade level!',
+        'study': 'Consistent study leads to mastery. What subject are you focusing on?',
+        'default': 'That\'s an interesting question! Let me help you learn more about it.'
+    };
+    const key = Object.keys(responses).find(k => message.toLowerCase().includes(k)) || 'default';
+    return responses[key];
+}
+
+function showFeature(feature) {
+    const features = {
+        calculator: '<h3>🧮 Math Calculator</h3><p>Advanced calculator for equations, derivatives, integrals, and more!</p><button onclick="window.location.href=\'/math_solver\'">Launch Calculator</button>',
+        flashcards: '<h3>📝 Flash Cards</h3><p>Create custom flashcards for any subject. Practice mode included!</p><textarea placeholder="Enter terms and definitions..." rows="4"></textarea><br><button>Create Flashcard Set</button>',
+        notes: '<h3>📓 Study Notes</h3><p>Organize notes with rich text editor and tagging system.</p><textarea placeholder="Write your notes here..." rows="6"></textarea><br><button>Save Notes</button>',
+        progress: '<h3>📊 Progress Tracker</h3><p>Track your learning across subjects with XP and achievements.</p><div>Current Level: 5 | XP: 1250/1500</div><progress value="1250" max="1500"></progress>',
+        simulator: '<h3>🔬 Science Simulator</h3><p>Interactive physics, chemistry, and biology experiments.</p><button onclick="alert(\'Launching Physics Lab...\')">Start Physics Lab</button><button onclick="alert(\'Launching Chemistry Lab...\')">Start Chemistry Lab</button>',
+        code: '<h3>💻 Code Playground</h3><p>Write, run, and debug code in multiple languages.</p><textarea placeholder="Write your code here..." rows="8"></textarea><br><button>Run Code</button>',
+        physics: '<h3>⚛️ Physics Lab</h3><p>Simulate forces, motion, electricity, and quantum phenomena.</p><button onclick="alert(\'Launching Force Simulator...\')">Force Simulator</button><button onclick="alert(\'Launching Circuit Builder...\')">Circuit Builder</button>',
+        chemistry: '<h3>🧪 Chemistry Lab</h3><p>Mix compounds, balance equations, and explore reactions.</p><button onclick="alert(\'Launching Periodic Table...\')">Periodic Table</button><button onclick="alert(\'Launching Reaction Simulator...\')">Reaction Simulator</button>',
+        history: '<h3>📜 History Timeline</h3><p>Interactive timeline of world history with key events.</p><button onclick="alert(\'Launching Ancient History...\')">Ancient History</button><button onclick="alert(\'Launching Modern History...\')">Modern History</button>',
+        geography: '<h3>🌍 Geography Map</h3><p>Explore continents, countries, and geographical features.</p><button onclick="alert(\'Launching World Map...\')">World Map</button><button onclick="alert(\'Launching Climate Zones...\')">Climate Zones</button>',
+        literature: '<h3>📚 Literature Analysis</h3><p>Analyze texts, poetry, and literary devices.</p><button onclick="alert(\'Launching Text Analyzer...\')">Text Analyzer</button><button onclick="alert(\'Launching Poetry Workshop...\')">Poetry Workshop</button>',
+        art: '<h3>🎨 Art Gallery</h3><p>Explore art history and create digital art.</p><button onclick="alert(\'Launching Art History...\')">Art History</button><button onclick="alert(\'Launching Digital Canvas...\')">Digital Canvas</button>'
+    };
+    document.getElementById('feature-display').innerHTML = features[feature] || '<h3>Feature Not Found</h3><p>This feature is under development.</p>';
+}
+
+function generateArray() {
+    array = [];
+    for (let i = 0; i < arraySize; i++) {
+        array.push(Math.floor(Math.random() * 300) + 10);
+    }
+    renderArray();
+}
+
+function renderArray() {
+    const container = document.getElementById('array-container');
+    container.innerHTML = '';
+    array.forEach(value => {
+        const bar = document.createElement('div');
+        bar.className = 'array-bar';
+        bar.style.height = `${value}px`;
+        container.appendChild(bar);
+    });
+}
+
+function generateGrid() {
+    grid = [];
+    for (let i = 0; i < gridSize; i++) {
+        grid[i] = [];
+        for (let j = 0; j < gridSize; j++) {
+            grid[i][j] = {
+                x: i,
+                y: j,
+                isWall: false,
+                isStart: (i === start.x && j === start.y),
+                isEnd: (i === end.x && j === end.y),
+                visited: false,
+                path: false,
+                parent: null,
+                distance: Infinity
+            };
+        }
+    }
+    renderGrid();
+}
+
+function renderGrid() {
+    const container = document.getElementById('grid-container');
+    container.innerHTML = '';
+    for (let i = 0; i < gridSize; i++) {
+        for (let j = 0; j < gridSize; j++) {
+            const cell = document.createElement('div');
+            cell.className = 'grid-cell';
+            cell.dataset.x = i;
+            cell.dataset.y = j;
+            if (grid[i][j].isWall) cell.classList.add('wall');
+            if (grid[i][j].isStart) cell.classList.add('start');
+            if (grid[i][j].isEnd) cell.classList.add('end');
+            if (grid[i][j].visited) cell.classList.add('visited');
+            if (grid[i][j].path) cell.classList.add('path');
+            cell.addEventListener('mousedown', () => {
+                isMouseDown = true;
+                toggleWall(i, j);
+            });
+            cell.addEventListener('mouseover', () => {
+                if (isMouseDown) toggleWall(i, j);
+            });
+            cell.addEventListener('mouseup', () => {
+                isMouseDown = false;
+            });
+            container.appendChild(cell);
+        }
+    }
+}
+
+function toggleWall(x, y) {
+    if ((x === start.x && y === start.y) || (x === end.x && y === end.y)) return;
+    grid[x][y].isWall = !grid[x][y].isWall;
+    renderGrid();
+}
+
+function addWalls() {
+    for (let i = 0; i < gridSize; i++) {
+        for (let j = 0; j < gridSize; j++) {
+            if (Math.random() < 0.3 && !(i === start.x && j === start.y) && !(i === end.x && j === end.y)) {
+                grid[i][j].isWall = true;
+            }
+        }
+    }
+    renderGrid();
+}
+
+function clearPath() {
+    for (let i = 0; i < gridSize; i++) {
+        for (let j = 0; j < gridSize; j++) {
+            grid[i][j].visited = false;
+            grid[i][j].path = false;
+            grid[i][j].distance = Infinity;
+            grid[i][j].parent = null;
+        }
+    }
+    renderGrid();
+}
+
+function heuristic(a, b) {
+    return Math.abs(a.x - b.x) + Math.abs(a.y - b.y);
+}
+
+async function startAStar() {
+    clearPath();
+    const openSet = [];
+    const closedSet = new Set();
+    grid[start.x][start.y].distance = 0;
+    grid[start.x][start.y].f = heuristic(start, end);
+    openSet.push(grid[start.x][start.y]);
+
+    while (openSet.length > 0) {
+        openSet.sort((a, b) => a.f - b.f);
+        const current = openSet.shift();
+        closedSet.add(`${current.x},${current.y}`);
+
+        if (current.x === end.x && current.y === end.y) {
+            await reconstructPath(current);
+            return;
+        }
+
+        const neighbors = getNeighbors(current);
+        for (const neighbor of neighbors) {
+            if (closedSet.has(`${neighbor.x},${neighbor.y}`) || neighbor.isWall) continue;
+
+            const tentativeG = current.distance + 1;
+            if (tentativeG < neighbor.distance) {
+                neighbor.parent = current;
+                neighbor.distance = tentativeG;
+                neighbor.f = tentativeG + heuristic(neighbor, end);
+                if (!openSet.includes(neighbor)) {
+                    openSet.push(neighbor);
+                }
+            }
+        }
+
+        if (current !== grid[start.x][start.y] && current !== grid[end.x][end.y]) {
+            current.visited = true;
+            renderGrid();
+            await sleep(10);
+        }
+    }
+}
+
+async function startDijkstra() {
+    clearPath();
+    const unvisited = [];
+    for (let i = 0; i < gridSize; i++) {
+        for (let j = 0; j < gridSize; j++) {
+            grid[i][j].distance = Infinity;
+            unvisited.push(grid[i][j]);
+        }
+    }
+    grid[start.x][start.y].distance = 0;
+
+    while (unvisited.length > 0) {
+        unvisited.sort((a, b) => a.distance - b.distance);
+        const current = unvisited.shift();
+
+        if (current.distance === Infinity) break;
+
+        if (current.x === end.x && current.y === end.y) {
+            await reconstructPath(current);
+            return;
+        }
+
+        const neighbors = getNeighbors(current);
+        for (const neighbor of neighbors) {
+            if (neighbor.isWall || !unvisited.includes(neighbor)) continue;
+
+            const alt = current.distance + 1;
+            if (alt < neighbor.distance) {
+                neighbor.distance = alt;
+                neighbor.parent = current;
+            }
+        }
+
+        if (current !== grid[start.x][start.y] && current !== grid[end.x][end.y]) {
+            current.visited = true;
+            renderGrid();
+            await sleep(10);
+        }
+    }
+}
+
+async function startBFS() {
+    clearPath();
+    const queue = [grid[start.x][start.y]];
+    const visited = new Set();
+    visited.add(`${start.x},${start.y}`);
+
+    while (queue.length > 0) {
+        const current = queue.shift();
+
+        if (current.x === end.x && current.y === end.y) {
+            await reconstructPath(current);
+            return;
+        }
+
+        const neighbors = getNeighbors(current);
+        for (const neighbor of neighbors) {
+            const key = `${neighbor.x},${neighbor.y}`;
+            if (!visited.has(key) && !neighbor.isWall) {
+                visited.add(key);
+                neighbor.parent = current;
+                queue.push(neighbor);
+            }
+        }
+
+        if (current !== grid[start.x][start.y] && current !== grid[end.x][end.y]) {
+            current.visited = true;
+            renderGrid();
+            await sleep(20);
+        }
+    }
+}
+
+function getNeighbors(node) {
+    const neighbors = [];
+    const dirs = [[-1, 0], [1, 0], [0, -1], [0, 1]];
+    for (const [dx, dy] of dirs) {
+        const nx = node.x + dx;
+        const ny = node.y + dy;
+        if (nx >= 0 && nx < gridSize && ny >= 0 && ny < gridSize) {
+            neighbors.push(grid[nx][ny]);
+        }
+    }
+    return neighbors;
+}
+
+async function reconstructPath(endNode) {
+    let current = endNode;
+    while (current) {
+        current.path = true;
+        current = current.parent;
+        renderGrid();
+        await sleep(50);
+    }
+}
+
+async function bubbleSort() {
+    for (let i = 0; i < array.length; i++) {
+        for (let j = 0; j < array.length - i - 1; j++) {
+            if (array[j] > array[j + 1]) {
+                [array[j], array[j + 1]] = [array[j + 1], array[j]];
+                renderArray();
+                await sleep(10);
+            }
+        }
+    }
+}
+
+async function quickSort() {
+    await quickSortHelper(0, array.length - 1);
+}
+
+async function quickSortHelper(low, high) {
+    if (low < high) {
+        const pi = await partition(low, high);
+        await quickSortHelper(low, pi - 1);
+        await quickSortHelper(pi + 1, high);
+    }
+}
+
+async function partition(low, high) {
+    const pivot = array[high];
+    let i = low - 1;
+    for (let j = low; j < high; j++) {
+        if (array[j] < pivot) {
+            i++;
+            [array[i], array[j]] = [array[j], array[i]];
+            renderArray();
+            await sleep(50);
+        }
+    }
+    [array[i + 1], array[high]] = [array[high], array[i + 1]];
+    renderArray();
+    return i + 1;
+}
+
+async function mergeSort() {
+    await mergeSortHelper(0, array.length - 1);
+}
+
+async function mergeSortHelper(l, r) {
+    if (l >= r) return;
+    const m = Math.floor((l + r) / 2);
+    await mergeSortHelper(l, m);
+    await mergeSortHelper(m + 1, r);
+    await merge(l, m, r);
+}
+
+async function merge(l, m, r) {
+    const n1 = m - l + 1;
+    const n2 = r - m;
+    const L = array.slice(l, m + 1);
+    const R = array.slice(m + 1, r + 1);
+    let i = 0, j = 0, k = l;
+    while (i < n1 && j < n2) {
+        if (L[i] <= R[j]) {
+            array[k] = L[i];
+            i++;
+        } else {
+            array[k] = R[j];
+            j++;
+        }
+        k++;
+        renderArray();
+        await sleep(20);
+    }
+    while (i < n1) {
+        array[k] = L[i];
+        i++;
+        k++;
+        renderArray();
+        await sleep(20);
+    }
+    while (j < n2) {
+        array[k] = R[j];
+        j++;
+        k++;
+        renderArray();
+        await sleep(20);
+    }
+}
+
+async function insertionSort() {
+    for (let i = 1; i < array.length; i++) {
+        const key = array[i];
+        let j = i - 1;
+        while (j >= 0 && array[j] > key) {
+            array[j + 1] = array[j];
+            j--;
+            renderArray();
+            await sleep(30);
+        }
+        array[j + 1] = key;
+        renderArray();
+    }
+}
+
+async function selectionSort() {
+    for (let i = 0; i < array.length - 1; i++) {
+        let minIdx = i;
+        for (let j = i + 1; j < array.length; j++) {
+            if (array[j] < array[minIdx]) {
+                minIdx = j;
+            }
+        }
+        [array[i], array[minIdx]] = [array[minIdx], array[i]];
+        renderArray();
+        await sleep(50);
+    }
+}
+
+async function heapSort() {
+    const n = array.length;
+
+    for (let i = Math.floor(n / 2) - 1; i >= 0; i--) {
+        await heapify(n, i);
+    }
+
+    for (let i = n - 1; i > 0; i--) {
+        [array[0], array[i]] = [array[i], array[0]];
+        renderArray();
+        await sleep(50);
+        await heapify(i, 0);
+    }
+}
+
+async function heapify(n, i) {
+    let largest = i;
+    const left = 2 * i + 1;
+    const right = 2 * i + 2;
+
+    if (left < n && array[left] > array[largest]) {
+        largest = left;
+    }
+
+    if (right < n && array[right] > array[largest]) {
+        largest = right;
+    }
+
+    if (largest !== i) {
+        [array[i], array[largest]] = [array[largest], array[i]];
+        renderArray();
+        await sleep(50);
+        await heapify(n, largest);
+    }
+}
+
+async function radixSort() {
+    const max = Math.max(...array);
+    let exp = 1;
+    while (Math.floor(max / exp) > 0) {
+        await countingSort(exp);
+        exp *= 10;
+    }
+}
+
+async function countingSort(exp) {
+    const output = new Array(array.length);
+    const count = new Array(10).fill(0);
+
+    for (let i = 0; i < array.length; i++) {
+        count[Math.floor(array[i] / exp) % 10]++;
+    }
+
+    for (let i = 1; i < 10; i++) {
+        count[i] += count[i - 1];
+    }
+
+    for (let i = array.length - 1; i >= 0; i--) {
+        output[count[Math.floor(array[i] / exp) % 10] - 1] = array[i];
+        count[Math.floor(array[i] / exp) % 10]--;
+    }
+
+    for (let i = 0; i < array.length; i++) {
+        array[i] = output[i];
+        renderArray();
+        await sleep(50);
+    }
+}
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+function setMode(mode) {
+    document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
+    event.target.classList.add('active');
+    if (mode === 'animer') {
+        document.body.style.fontFamily = "'Comic Sans MS', cursive";
+    } else if (mode === 'relaz') {
+        document.body.style.background = 'linear-gradient(to bottom, #ffcccc 0%, #ffffcc 50%, #ccffcc 100%)';
+    } else {
+        document.body.style.background = 'linear-gradient(to bottom, #000011 0%, #000033 50%, #000055 100%)';
+    }
+}
+
+function showTab(tab) {
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(content => content.style.display = 'none');
+    document.querySelector(`button[onclick="showTab('${tab}')"]`).classList.add('active');
+    document.getElementById(`${tab}-tab`).style.display = 'block';
+    if (tab === 'pathfinding') {
+        generateGrid();
+    }
+}
+
+generateArray();
+</script>
+</body>
+</html>

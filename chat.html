@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chat with {{ friend.username }} - Proscens</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="container">
+    <h1>💬 Chat with {{ friend.username }}</h1>
+    <a href="/friends">Back to Friends</a>
+    <hr>
+    <div class="chat-messages">
+        {% for message in messages %}
+            <div class="message {% if message.sender_id == session['user_id'] %}sent{% else %}received{% endif %}">
+                <strong>{{ message.sender.username if message.sender_id != session['user_id'] else 'You' }}:</strong> {{ message.content }}
+                <small>{{ message.timestamp.strftime('%H:%M') }}</small>
+            </div>
+        {% endfor %}
+    </div>
+    <form method="POST" action="/send_message/{{ friend.id }}">
+        <input type="text" name="message" placeholder="Type your message..." required>
+        <button type="submit">Send</button>
+    </form>
+</div>
+</body>
+</html>

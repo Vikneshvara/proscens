@@ -1,19 +1,87 @@
 body {
-    font-family: 'Arial', sans-serif;
-    background: #1c1c1c;
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    background: linear-gradient(to bottom, #000011 0%, #000033 50%, #000055 100%);
     color: #f0f0f0;
     margin: 0;
     padding: 0;
+    overflow-x: hidden;
+    position: relative;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.05) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: -1;
+}
+
+.moon {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, #ff4444, #880000);
+    box-shadow: 0 0 10px #ff0000;
+    cursor: pointer;
+    z-index: 10;
+    transition: all 0.5s ease;
+}
+
+.moon:hover {
+    background: radial-gradient(circle at 30% 30%, #4444ff, #000088);
+    box-shadow: 0 0 10px #0000ff;
+}
+
+.loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    animation: fadeOut 2s ease-in-out 1s forwards;
+}
+
+.meteor {
+    width: 30px;
+    height: 30px;
+    background: linear-gradient(45deg, #ff6600, #ff0000);
+    border-radius: 50%;
+    animation: crash 1s ease-in-out;
+}
+
+@keyframes crash {
+    0% { transform: translateY(-50px); }
+    100% { transform: translateY(0); }
+}
+
+@keyframes fadeOut {
+    to { opacity: 0; visibility: hidden; }
 }
 
 h1, h2 {
     color: #ff0000;
     text-transform: uppercase;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px #000;
+    font-size: 1.5em;
 }
 
 a {
     text-decoration: none;
     color: #fcdc00;
+    font-weight: bold;
 }
 
 a:hover {
@@ -22,33 +90,105 @@ a:hover {
 
 .container {
     width: 90%;
-    max-width: 1000px;
+    max-width: 800px;
     margin: 20px auto;
+    position: relative;
+    z-index: 1;
 }
 
 .project-card {
-    border: 2px solid #fcdc00;
-    border-radius: 12px;
-    padding: 15px;
-    margin: 15px 0;
-    background: #2a2a2a;
+    border: 1px solid #fcdc00;
+    border-radius: 8px;
+    padding: 10px;
+    margin: 10px 0;
+    background: rgba(42, 42, 42, 0.8);
+    backdrop-filter: blur(5px);
 }
 
 .project-card img {
     max-width: 100%;
-    border-radius: 8px;
+    border-radius: 4px;
 }
 
 button {
     background: #ff0000;
     color: white;
     border: none;
-    padding: 8px 12px;
-    border-radius: 6px;
+    padding: 6px 10px;
+    border-radius: 4px;
     cursor: pointer;
+    font-family: 'Comic Sans MS', cursive;
+    font-size: 0.9em;
 }
 
 button:hover {
     background: #fcdc00;
     color: #1c1c1c;
+}
+
+.daily-news {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 15px;
+    border-radius: 8px;
+    margin: 15px 0;
+    backdrop-filter: blur(5px);
+}
+
+.skill-section {
+    margin: 15px 0;
+}
+
+.skill-card {
+    background: rgba(0, 0, 0, 0.5);
+    padding: 8px;
+    margin: 8px 0;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: transform 0.3s;
+    font-size: 0.9em;
+}
+
+.skill-card:hover {
+    transform: scale(1.02);
+}
+
+.mode-selector {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    z-index: 100;
+}
+
+.mode-btn {
+    margin: 3px;
+    padding: 3px 6px;
+    background: #333;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 0.8em;
+}
+
+.chatbot {
+    background: rgba(0, 0, 0, 0.5);
+    padding: 15px;
+    border-radius: 8px;
+    margin: 15px 0;
+    max-height: 250px;
+    overflow-y: auto;
+    font-size: 0.9em;
+}
+
+#chat-messages {
+    height: 150px;
+    overflow-y: auto;
+    margin-bottom: 8px;
+}
+
+#chat-input {
+    width: 70%;
+    padding: 4px;
+    font-family: 'Comic Sans MS', cursive;
+    font-size: 0.9em;
 }

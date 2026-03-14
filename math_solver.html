@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Super Advanced Math Solver - Proscens</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background: radial-gradient(ellipse at center, #000011 0%, #000033 50%, #000055 100%);
+            background-size: cover;
+            animation: backgroundShift 20s infinite alternate;
+            font-family: 'Arial', sans-serif;
+        }
+
+        @keyframes backgroundShift {
+            0% { background: radial-gradient(ellipse at center, #000011 0%, #000033 50%, #000055 100%); }
+            50% { background: radial-gradient(ellipse at center, #110011 0%, #330033 50%, #550055 100%); }
+            100% { background: radial-gradient(ellipse at center, #001100 0%, #003300 50%, #005500 100%); }
+        }
+
+        .container {
+            position: relative;
+            z-index: 10;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            color: white;
+            text-align: center;
+        }
+
+        .solver-container, .plot-container {
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid #ff6b6b;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px 0;
+            box-shadow: 0 0 30px #ff6b6b, inset 0 0 30px rgba(255, 107, 107, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .super-button {
+            padding: 15px 30px;
+            background: linear-gradient(45deg, #ff6b6b, #ff5252);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .super-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(255, 107, 107, 0.6);
+            background: linear-gradient(45deg, #ff5252, #ff3838);
+        }
+
+        .super-button:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 10px rgba(255, 107, 107, 0.4);
+        }
+
+        .super-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .super-button:hover::before {
+            left: 100%;
+        }
+
+        .input-group {
+            margin: 20px 0;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+            font-size: 16px;
+            color: #ffaa00;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ff6b6b;
+            border-radius: 10px;
+            font-size: 16px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #ffaa00;
+            box-shadow: 0 0 10px #ffaa00;
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        #result, #plot-result {
+            margin-top: 20px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            min-height: 50px;
+            font-family: 'Courier New', monospace;
+            font-size: 16px;
+            border: 1px solid #ff6b6b;
+            word-wrap: break-word;
+        }
+
+        .examples {
+            text-align: left;
+            margin-top: 20px;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .examples h3 {
+            color: #ffaa00;
+            margin-bottom: 10px;
+        }
+
+        .examples ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .examples li {
+            margin: 8px 0;
+            padding: 5px;
+            background: rgba(255, 107, 107, 0.1);
+            border-radius: 5px;
+        }
+
+        .history {
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        .history h3 {
+            color: #ffaa00;
+        }
+
+        .history ul {
+            list-style-type: none;
+            padding: 0;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .history li {
+            margin: 5px 0;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .history li:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .tab-button {
+            padding: 10px 20px;
+            margin: 0 5px;
+            background: rgba(255, 107, 107, 0.2);
+            color: white;
+            border: 1px solid #ff6b6b;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .tab-button.active {
+            background: #ff6b6b;
+            box-shadow: 0 0 10px #ff6b6b;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 30px #ff6b6b, inset 0 0 30px rgba(255, 107, 107, 0.1); }
+            50% { box-shadow: 0 0 50px #ff6b6b, inset 0 0 50px rgba(255, 107, 107, 0.2); }
+            100% { box-shadow: 0 0 30px #ff6b6b, inset 0 0 30px rgba(255, 107, 107, 0.1); }
+        }
+
+        .solver-container {
+            animation: pulse 3s infinite;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>🚀 Super Advanced Math Solver</h1>
+    <a href="/visualizer" style="color: #ffaa00; text-decoration: none;">← Back to Visualizer</a>
+    <hr>
+
+    <div class="tabs">
+        <button class="tab-button active" onclick="showTab('solver')">Math Solver</button>
+        <button class="tab-button" onclick="showTab('plotter')">Function Plotter</button>
+    </div>
+
+    <div id="solver-tab" class="tab-content active">
+        <div class="solver-container">
+            <h2>🧮 Powerful Math Operations</h2>
+            <form id="math-form">
+                <div class="input-group">
+                    <label for="operation">Select Operation:</label>
+                    <select id="operation" name="operation">
+                        <option value="evaluate">Evaluate Expression</option>
+                        <option value="solve">Solve Equation</option>
+                        <option value="diff">Differentiate</option>
+                        <option value="integrate">Integrate</option>
+                        <option value="simplify">Simplify</option>
+                        <option value="limit">Limit (expr,var,point)</option>
+                        <option value="series">Taylor Series</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="expression">Enter Expression:</label>
+                    <input type="text" id="expression" name="expression" placeholder="e.g., x**2 + 2*x + 1" required>
+                </div>
+                <button type="submit" class="super-button">🚀 SOLVE IT!</button>
+            </form>
+            <div id="result"></div>
+        </div>
+
+        <div class="examples">
+            <h3>💡 Examples:</h3>
+            <ul>
+                <li><strong>Evaluate:</strong> 2 + 3*sin(pi/4)</li>
+                <li><strong>Solve:</strong> x**2 - 4 = 0</li>
+                <li><strong>Differentiate:</strong> x**3 + 2*x</li>
+                <li><strong>Integrate:</strong> x**2</li>
+                <li><strong>Simplify:</strong> (x+1)**2 - (x**2 + 2*x + 1)</li>
+                <li><strong>Limit:</strong> (x**2 - 1)/(x - 1),x,1</li>
+                <li><strong>Series:</strong> sin(x)</li>
+            </ul>
+        </div>
+
+        <div class="history">
+            <h3>📜 Calculation History</h3>
+            <ul id="history-list"></ul>
+        </div>
+    </div>
+
+    <div id="plotter-tab" class="tab-content">
+        <div class="plot-container">
+            <h2>📈 Function Plotter</h2>
+            <form id="plot-form">
+                <div class="input-group">
+                    <label for="plot-expression">Enter Function:</label>
+                    <input type="text" id="plot-expression" name="expression" placeholder="e.g., x**2 + sin(x)" required>
+                </div>
+                <button type="submit" class="super-button">🎨 PLOT IT!</button>
+            </form>
+            <div id="plot-result"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+let history = [];
+
+function showTab(tabName) {
+    document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+    document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+    document.getElementById(tabName + '-tab').classList.add('active');
+    event.target.classList.add('active');
+}
+
+document.getElementById('math-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const formData = new FormData(this);
+    fetch('/solve_math', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.text())
+    .then(result => {
+        document.getElementById('result').innerText = result;
+        addToHistory(formData.get('operation') + ': ' + formData.get('expression'), result);
+    })
+    .catch(error => {
+        document.getElementById('result').innerText = 'Error: ' + error;
+    });
+});
+
+document.getElementById('plot-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const formData = new FormData(this);
+    document.getElementById('plot-result').innerHTML = '<div style="text-align:center; padding:20px;">Generating plot...</div>';
+    fetch('/plot_function', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.text())
+    .then(result => {
+        document.getElementById('plot-result').innerHTML = result;
+    })
+    .catch(error => {
+        document.getElementById('plot-result').innerHTML = 'Error: ' + error;
+    });
+});
+
+function addToHistory(input, output) {
+    history.unshift({input, output});
+    if (history.length > 10) history.pop();
+    updateHistoryDisplay();
+}
+
+function updateHistoryDisplay() {
+    const list = document.getElementById('history-list');
+    list.innerHTML = '';
+    history.forEach(item => {
+        const li = document.createElement('li');
+        li.innerHTML = `<strong>${item.input}</strong><br>${item.output}`;
+        li.onclick = () => {
+            document.getElementById('result').innerText = item.output;
+        };
+        list.appendChild(li);
+    });
+}
+</script>
+</body>
+</html>

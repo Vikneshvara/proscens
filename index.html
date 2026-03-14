@@ -1,34 +1,144 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Proscens - Project Voting</title>
+    <title>Proscens - STEM Learning Hub</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='%23ff0000'/><circle cx='35' cy='35' r='5' fill='%23ffffff'/></svg>">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
+<div class="loading-screen">
+    <div class="meteor"></div>
+</div>
+<div class="moon" onclick="alert('Blood Moon Activated! Perplexity: 0')"></div>
+<div class="mode-selector">
+    <button class="mode-btn active" onclick="setMode('astros')">Astros</button>
+    <button class="mode-btn" onclick="setMode('animer')">Animer</button>
+    <button class="mode-btn" onclick="setMode('relaz')">Relaz</button>
+</div>
 <div class="container">
-    <h1>🚀 Proscens Project Voting</h1>
-    {% if 'user_id' in session %}
-        <a href="/submit">Submit Project</a> |
-        <a href="/premium">Go Premium</a> |
-        <a href="/logout">Logout</a>
+    <h1>🚀 Proscens STEM Learning Hub</h1>
+    {% if user_info %}
+        <div class="user-info">
+            <span>Welcome, {{ user_info.username }}! Level {{ user_info.level }} | {{ user_info.xp }} XP</span>
+        </div>
+        <nav>
+            <a href="/submit_enhanced">Submit Project</a> |
+            <a href="/friends">Friends</a> |
+            <a href="/global_chat">Global Chat</a> |
+            <a href="/achievements">Achievements</a> |
+            <a href="/leaderboard">Leaderboard</a> |
+            <a href="/premium">Premium</a> |
+            <a href="/logout">Logout</a> |
+            <a href="/skills">Skills</a> |
+            <a href="/visualizer">STEM Hub</a> |
+            <a href="/quiz">Quiz</a>
+        </nav>
     {% else %}
-        <a href="/login">Login</a> |
-        <a href="/register">Register</a>
+        <nav>
+            <a href="/login">Login</a> |
+            <a href="/register">Register</a>
+        </nav>
     {% endif %}
 
     <hr>
-    {% for project in projects %}
-    <div class="project-card">
-        <h2>{{ project.title }} (Votes: {{ project.votes }})</h2>
-        <p>{{ project.description }}</p>
-        {% if project.image_path %}
-            <img src="{{ project.image_path }}" alt="Project Image">
-        {% endif %}
-        <p><a href="{{ project.tutorial_link }}">Tutorial</a></p>
-        <a href="/vote/{{ project.id }}"><button>Vote</button></a>
-        <p>💰 Ads placeholder ($5/ad)</p>
+    <div class="daily-news">
+        <h2>📰 Daily STEM News</h2>
+        <p><strong>MIT AI Breakthrough</strong> - New climate models predict extreme weather patterns.</p>
+        <p><strong>Google Quantum</strong> - Record quantum computing speeds achieved.</p>
+        <p><strong>SpaceX Mars</strong> - Colonization plans announced for 2030.</p>
+        <p>Perplexity: 0</p>
     </div>
-    {% endfor %}
+
+    <div class="chatbot">
+        <h2>🤖 AI Assistant</h2>
+        <div id="chat-messages"></div>
+        <input type="text" id="chat-input" placeholder="Ask me anything about STEM!">
+        <button onclick="sendMessage()">Send</button>
+    </div>
+
+    <div class="projects-section">
+        <h2>🌟 Featured Projects</h2>
+        {% for project in projects %}
+        <div class="project-card">
+            <h3>{{ project.title }} ({{ project.votes }} votes)</h3>
+            <p>{{ project.description }}</p>
+            <p>Category: {{ project.category }} | Tags: {{ project.tags }}</p>
+            {% if project.image_path %}
+                <img src="{{ url_for('static', filename='uploads/' + project.image_path) }}" alt="Project Image" style="max-width: 200px;">
+            {% endif %}
+            <p><a href="{{ project.tutorial_link }}" target="_blank">View Tutorial</a></p>
+            <a href="/vote/{{ project.id }}"><button>👍 Vote</button></a>
+            <a href="/profile/{{ project.submitter_id }}"><button>👤 View Creator</button></a>
+            {% if user_info and user_info.username != project.submitter.username %}
+                <a href="/add_friend/{{ project.submitter_id }}"><button>👥 Add Friend</button></a>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="skill-section">
+        <h2>⚔️ STEM Skills</h2>
+        <div class="skill-card" onclick="learnSkill('Python')">🐍 Python Programming</div>
+        <div class="skill-card" onclick="learnSkill('AI')">🤖 Artificial Intelligence</div>
+        <div class="skill-card" onclick="learnSkill('Quantum')">⚛️ Quantum Physics</div>
+        <div class="skill-card" onclick="learnSkill('Space')">🚀 Space Exploration</div>
+        <div class="skill-card" onclick="learnSkill('Bio')">🧬 Biotechnology</div>
+        <div class="skill-card" onclick="learnSkill('Data')">📊 Data Science</div>
+    </div>
 </div>
+
+<script>
+function setMode(mode) {
+    document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
+    event.target.classList.add('active');
+    if (mode === 'animer') {
+        document.body.style.fontFamily = "'Comic Sans MS', cursive";
+        document.body.style.background = 'linear-gradient(to bottom, #000011 0%, #000033 50%, #000055 100%)';
+    } else if (mode === 'relaz') {
+        document.body.style.background = 'linear-gradient(to bottom, #ffcccc 0%, #ffffcc 50%, #ccffcc 100%)';
+        document.body.style.color = '#000';
+        document.querySelectorAll('h1, h2').forEach(el => el.style.color = '#006600');
+        document.querySelectorAll('a').forEach(el => el.style.color = '#006600');
+    } else {
+        document.body.style.background = 'linear-gradient(to bottom, #000011 0%, #000033 50%, #000055 100%)';
+        document.body.style.color = '#f0f0f0';
+        document.querySelectorAll('h1, h2').forEach(el => el.style.color = '#ff0000');
+        document.querySelectorAll('a').forEach(el => el.style.color = '#fcdc00');
+    }
+}
+
+function sendMessage() {
+    const input = document.getElementById('chat-input');
+    const messages = document.getElementById('chat-messages');
+    if (input.value.trim()) {
+        messages.innerHTML += `<p><strong>You:</strong> ${input.value}</p>`;
+        const response = getBotResponse(input.value);
+        messages.innerHTML += `<p><strong>AI:</strong> ${response}</p>`;
+        input.value = '';
+        messages.scrollTop = messages.scrollHeight;
+    }
+}
+
+function getBotResponse(message) {
+    const responses = {
+        'hello': 'Hello! How can I help you with STEM today?',
+        'ai': 'AI is amazing! It\'s inspired by how our brains work.',
+        'space': 'Space exploration is exciting! Mars is next!',
+        'coding': 'Coding is fun! Start with Python or JavaScript.',
+        'math': 'Math is everywhere! It helps solve real problems.',
+        'science': 'Science explains the world around us!',
+        'python': 'Python is great for beginners! It\'s readable and powerful.',
+        'quantum': 'Quantum physics is mind-bending! It deals with the smallest particles.',
+        'data': 'Data science combines math, programming, and statistics.',
+        'default': 'That\'s interesting! Tell me more about STEM.'
+    };
+    const key = Object.keys(responses).find(k => message.toLowerCase().includes(k)) || 'default';
+    return responses[key];
+}
+
+function learnSkill(skill) {
+    alert(`Learning ${skill}! Check out our STEM Hub for tutorials.`);
+}
+</script>
 </body>
 </html>
