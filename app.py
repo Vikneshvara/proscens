@@ -4,6 +4,8 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 from datetime import datetime
 import os
+import sympy
+from sympy import sympify
 
 app = Flask(__name__)
 app.secret_key = 'THE_BOYS_SECRET_KEY'
@@ -102,9 +104,76 @@ def vote(id):
     flash('Vote counted!')
     return redirect(url_for('index'))
 
-@app.route('/premium')
-def premium():
-    return render_template('premium.html')
+@app.route('/visualizer')
+def visualizer():
+    return render_template('visualizer.html')
+
+@app.route('/math_solver')
+def math_solver():
+    return render_template('math_solver.html')
+
+@app.route('/solve_math', methods=['POST'])
+def solve_math():
+    from sympy import sympify, simplify, solve, diff, integrate, limit, series, evalf
+    expression = request.form['expression']
+    operation = request.form.get('operation', 'simplify')
+    
+    try:
+        expr = sympify(expression)
+        if operation == 'simplify':
+            result = simplify(expr)
+        elif operation == 'solve':
+            result = solve(expr)
+        elif operation == 'differentiate':
+            result = diff(expr)
+        elif operation == 'integrate':
+            result = integrate(expr)
+        elif operation == 'limit':
+            result = limit(expr, sympify('x'), 0)
+        elif operation == 'series':
+            result = series(expr, n=6)
+        else:
+            result = expr.evalf()
+        return str(result)
+    except Exception as e:
+        return f"Error: {str(e)}"
+
+@app.route('/plot_function', methods=['POST'])
+def plot_function():
+    import matplotlib.pyplot as plt
+    import io
+    import base64
+    
+    expression = request.form['expression']
+    x_min = float(request.form.get('x_min', -10))
+    x_max = float(request.form.get('x_max', 10))
+    
+    try:
+        from sympy import symbols, lambdify
+        x = symbols('x')
+        expr = sympify(expression)
+        f = lambdify(x, expr, 'numpy')
+        
+        import numpy as np
+        x_vals = np.linspace(x_min, x_max, 1000)
+        y_vals = f(x_vals)
+        
+        plt.figure(figsize=(8, 6))
+        plt.plot(x_vals, y_vals)
+        plt.title(f'Plot of {expression}')
+        plt.xlabel('x')
+        plt.ylabel('y')
+        plt.grid(True)
+        
+        buf = io.BytesIO()
+        plt.savefig(buf, format='png')
+        buf.seek(0)
+        image_base64 = base64.b64encode(buf.read()).decode('utf-8')
+        plt.close()
+        
+        return f'<img src="data:image/png;base64,{image_base64}" alt="Function Plot">'
+    except Exception as e:
+        return f"Error plotting: {str(e)}"
 
 if __name__ == '__main__':
     os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
